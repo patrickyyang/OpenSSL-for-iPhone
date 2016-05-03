@@ -3,4 +3,5 @@
 //
 
 #import "FSOpenSSL.h"
+#import "OpenSSLTest.h"
 #include <openssl/opensslv.h>

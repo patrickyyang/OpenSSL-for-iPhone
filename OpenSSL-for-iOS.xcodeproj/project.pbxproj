@@ -29,6 +29,8 @@
 		53572A55183AAFFE00B21832 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 53572A53183AAFFE00B21832 /* InfoPlist.strings */; };
 		53572A57183AAFFE00B21832 /* FSOpenSSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53572A56183AAFFE00B21832 /* FSOpenSSLTests.m */; };
 		D1E978031547EE765CD39AD2 /* FSOpenSSL.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E97EE2A904D58DAE4231E2 /* FSOpenSSL.m */; };
+		D461BB151CD83EB6000F0066 /* OpenSSLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = D461BB141CD83EB6000F0066 /* OpenSSLTest.m */; };
+		D4AD6BE31CD83D5300ECF132 /* rsa.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4AD6BDF1CD83D5300ECF132 /* rsa.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,10 @@
 		53572A58183AAFFE00B21832 /* OpenSSL-for-iOS_Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenSSL-for-iOS_Tests-Prefix.pch"; sourceTree = "<group>"; };
 		D1E979D803ACC127411934DC /* FSOpenSSL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSOpenSSL.h; sourceTree = "<group>"; };
 		D1E97EE2A904D58DAE4231E2 /* FSOpenSSL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSOpenSSL.m; sourceTree = "<group>"; };
+		D461BB131CD83EB6000F0066 /* OpenSSLTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenSSLTest.h; sourceTree = "<group>"; };
+		D461BB141CD83EB6000F0066 /* OpenSSLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenSSLTest.m; sourceTree = "<group>"; };
+		D4AD6BDF1CD83D5300ECF132 /* rsa.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rsa.cpp; sourceTree = "<group>"; };
+		D4AD6BE01CD83D5300ECF132 /* rsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rsa.h; sourceTree = "<group>"; };
 		FD5896FA1B2F1FAA00F3E5B5 /* build-libssl.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-libssl.sh"; sourceTree = "<group>"; };
 		FD5896FB1B2F1FB800F3E5B5 /* create-openssl-framework.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "create-openssl-framework.sh"; sourceTree = "<group>"; };
 		FD5896FC1B2F1FF900F3E5B5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -121,6 +127,7 @@
 		533ED2F01528C4840005C6FA = {
 			isa = PBXGroup;
 			children = (
+				D4AD6BDB1CD83D5300ECF132 /* test */,
 				FD5896FC1B2F1FF900F3E5B5 /* README.md */,
 				533ED3051528C4840005C6FA /* OpenSSL-for-iOS */,
 				53572A50183AAFFE00B21832 /* OpenSSL-for-iOS_Tests */,
@@ -167,6 +174,8 @@
 				D1E97EE2A904D58DAE4231E2 /* FSOpenSSL.m */,
 				D1E979D803ACC127411934DC /* FSOpenSSL.h */,
 				534FB2AD180975D700B5F868 /* Icons.xcassets */,
+				D461BB131CD83EB6000F0066 /* OpenSSLTest.h */,
+				D461BB141CD83EB6000F0066 /* OpenSSLTest.m */,
 			);
 			path = "OpenSSL-for-iOS";
 			sourceTree = "<group>";
@@ -198,6 +207,23 @@
 				53572A58183AAFFE00B21832 /* OpenSSL-for-iOS_Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D4AD6BDB1CD83D5300ECF132 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				D4AD6BDC1CD83D5300ECF132 /* RSA */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
+		D4AD6BDC1CD83D5300ECF132 /* RSA */ = {
+			isa = PBXGroup;
+			children = (
+				D4AD6BDF1CD83D5300ECF132 /* rsa.cpp */,
+				D4AD6BE01CD83D5300ECF132 /* rsa.h */,
+			);
+			path = RSA;
 			sourceTree = "<group>";
 		};
 		FD5896FD1B2F1FFC00F3E5B5 /* Scripts */ = {
@@ -364,8 +390,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D461BB151CD83EB6000F0066 /* OpenSSLTest.m in Sources */,
 				2A3821001BFB5EEB00328618 /* AppDelegate.swift in Sources */,
 				2A3821021BFB607A00328618 /* ViewController.swift in Sources */,
+				D4AD6BE31CD83D5300ECF132 /* rsa.cpp in Sources */,
 				D1E978031547EE765CD39AD2 /* FSOpenSSL.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
