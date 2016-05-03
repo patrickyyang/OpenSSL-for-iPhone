@@ -41,98 +41,6 @@ void generateKey() {
     RSA_free(rsa);
 }
 
-std::string bio_read_privateKey(string data) {
-    OpenSSL_add_all_algorithms();
-    
-    BIO* bp = BIO_new( BIO_s_file() );
-    
-    BIO_read_filename( bp, private_key);
-    
-    char passwd[]="1234";
-    RSA* rsaK = PEM_read_bio_RSAPrivateKey( bp, NULL, NULL, passwd );
-    if (NULL == rsaK) {
-        perror("read key file fail!");
-    }else{
-        printf("read success!\n");
-    }
-    
-    int nLen = RSA_size(rsaK);
-    //printf("len:%d\n",nLen);
-    char *pEncode = new char[nLen + 1];
-    int ret = RSA_private_decrypt(data.length(),(const unsigned char*)data.c_str(),(unsigned char *)pEncode,rsaK,RSA_PKCS1_PADDING);
-    std::string strRet;
-    if (ret >= 0) {
-        strRet = std::string(pEncode, ret);
-        //printf("%s",strRet.c_str());
-    }
-    
-    delete[] pEncode;
-    CRYPTO_cleanup_all_ex_data();
-    BIO_free_all( bp );
-    RSA_free(rsaK);
-    return strRet;
-}
-
-std::string bio_read_publicKey(string data){
-    OpenSSL_add_all_algorithms();
-    BIO* bp = BIO_new( BIO_s_file() );
-    BIO_read_filename( bp, public_key);
-    RSA* rsaK = PEM_read_bio_RSAPublicKey( bp, NULL, NULL, NULL );
-    if (NULL == rsaK) {
-        perror("read key file fail!");
-    }else{
-        printf("read success!");
-        int nLen = RSA_size(rsaK);
-        printf("len:%d\n",nLen);
-    }
-    int nLen = RSA_size(rsaK);
-    char *pEncode = new char[nLen + 1];
-    int ret = RSA_public_encrypt(data.length(),(const unsigned char*)data.c_str(),
-                                 (unsigned char *)pEncode,rsaK,RSA_PKCS1_PADDING);
-    std::string strRet;
-    if (ret >= 0) {
-        strRet = std::string(pEncode, ret);
-        //printf("%s\n",strRet.c_str());
-    }
-    delete[] pEncode;
-    CRYPTO_cleanup_all_ex_data();
-    BIO_free_all( bp );
-    RSA_free(rsaK);
-    return strRet;
-}
-
-void encryptFile(string inputfile,string outputfile){
-    ifstream file(inputfile.c_str());
-    ofstream outfile(outputfile.c_str());
-    string tsum;
-    string ss;
-    while (getline(file,ss)) {
-        tsum.append(ss.append("\n"));
-    }
-    cout<<"徐加密内容："<<tsum<<endl;
-    string mw = bio_read_publicKey(tsum);
-    cout<<mw<<endl;
-    outfile<<mw;
-    outfile.flush();
-    outfile.close();
-    file.close();
-}
-
-void decryptFile(string inputfile,string outputfile){
-    ifstream file(inputfile.c_str());
-    ofstream outfile(outputfile.c_str());
-    std::string tsum,ss;
-    while (getline(file,ss)) {
-        tsum.append(ss);
-    }
-    std::string cw = bio_read_privateKey(tsum);
-    cout<<"恢复明文："<<cw;
-    outfile<<cw;
-    outfile.flush();
-    outfile.close();
-    file.close();
-}
-
 void setKey(const char *publicPath, const char *privatePath)
 {
     public_key = (char *)malloc(strlen(publicPath) + 1);
@@ -141,152 +49,113 @@ void setKey(const char *publicPath, const char *privatePath)
     strcpy(private_key, privatePath);
 }
 
-int openssl_main() {
-    char *str = "第一步，首先需要在openssl官网下载openssl包http://www.openssl.org/source/；\n第二步，自己查资料去！";
-    //system("openssl genrsa -out private.key 1024");
-    generateKey();
-    printf("原文：%s\n",str);
-    std::string m = bio_read_publicKey(str);
-    printf("密文：\n------------%s--------------\n\n",m.c_str());
-    string miwen = m;
-    std::string c = bio_read_privateKey(miwen);
-    printf("解密后：\n------------%s--------------\n\n",c.c_str());
-    
-    printf("----------------加密文件--------------------------\n");
-    encryptFile("d:/before.txt","f:/my.txt");
-    cout<<"------------------done-------------------------------"<<endl;
-    /*
-     ifstream infile("f:/my.txt");
-     std::string instr,intemp;
-     while (getline(infile,intemp)) {
-     instr.append(intemp);
-     }
-     cout<<instr<<endl;
-     std::string cwen = bio_read_privateKey(instr);
-     cout<<cwen;
-     */
-    printf("-----------------解密文件----------------------------\n");
-    decryptFile("f:/my.txt","f:/jiemihou.txt");
-    cout<<"------------------done-------------------------------"<<endl;
-    
-    return 0;
-}
-
-
 /***********************************************/
+const unsigned char *public_key_content = (unsigned char *)"-----BEGIN PUBLIC KEY-----\n\
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8em7eBPuYSd4GdfDi5YAT2Bw+\
+hoxXXoSjhwataqjm3LOia+ox1lvcQEQKTQz73brN5Y/yGH2rGSsB/DBSlQrZKNFO\
+nwI+/4gCjgzz/78D4jBOCkJb9ROeeveD27OwSnrWsvHdtsbM+73+CZlPTqaovj/s\
+pZwezrp3+Ys0S3p3YQIDAQAB\n\
+-----END PUBLIC KEY-----";
 
+const unsigned char *private_key_content = (unsigned char *)"-----BEGIN RSA PRIVATE KEY-----\n\
+MIICXQIBAAKBgQC8em7eBPuYSd4GdfDi5YAT2Bw+hoxXXoSjhwataqjm3LOia+ox\
+1lvcQEQKTQz73brN5Y/yGH2rGSsB/DBSlQrZKNFOnwI+/4gCjgzz/78D4jBOCkJb\
+9ROeeveD27OwSnrWsvHdtsbM+73+CZlPTqaovj/spZwezrp3+Ys0S3p3YQIDAQAB\
+AoGBAKtWfZzVWMZ7OBwVcXNCgKkJh7uLYt817EwgPoC9emfMcHyRr6e4n29c+L2I\
+h+obCmuMacwCWZOF4KQAVwlrthxcfAuYubHDAn5faAboNqyr6opZRTYfwmJ+qs/V\
+ENVU5bLW2njP/+NZYH6gYO0jvxUTclOQkkPaPY6hvw27RiMxAkEA8nz2Qp0B4T8G\
+z8kcJWuZ9aOAj5pT6imDXfnl4avSAWIZC2SPPXPpus+AP1QfCRcTqQIBnT7a3TiL\
+95u0jzBsRQJBAMb7CFFw9orAjaE3QYtMRdBqugPEAvNruheKc74NCBMa7vSYWv9e\
+ZdQaaRwBMg5uDuh6jFP+78xS+4J6/2sTxm0CQG7f8IH45Hknpmev3yzFDHqirg/7\
+Us9I+AYqU5BiTf3P6v+olU5WB9MhOdS7FA3F/XlTr4VEzjJEvssS6PZn/7kCQQCn\
+M34z4TZqNY9Nbv8WrErl7SjNzUGlhlpjOaY0hwLH+xPcWMHuYEY0ytSUAbUsRvMk\
+CwYr9sdN7FUHuY8zTPSpAkBvVsdLcTsAclzbqGyNf59vdJ2O8OSZZFpXcQWtwmgw\
+Ilv4oE1xfJp4jQpkhKNPtNPjsTXjsfXY4Bhk38dbNeI7\n\
+-----END RSA PRIVATE KEY-----";
 
-char *public_encrypt(char *str,char *path_key){
-    char *p_en;
-    RSA *p_rsa;
-    FILE *file;
-    int flen,rsa_len;
-    if((file=fopen(path_key,"r"))==NULL){
-        perror("open key file error");
-        return NULL;
+RSA *rsa_mem_key(const unsigned char *content, int isPublic)
+{
+    RSA *rsa = NULL;
+    int length = (int)strlen((const char *)content);
+    BIO *bio = BIO_new_mem_buf((void*)content, length);
+    if (isPublic) {
+        rsa = PEM_read_bio_RSA_PUBKEY(bio, NULL, NULL, NULL);
+    } else {
+        rsa = PEM_read_bio_RSAPrivateKey(bio, NULL, NULL, NULL);
     }
-    if((p_rsa=PEM_read_RSA_PUBKEY(file,NULL,NULL,NULL))==NULL){
-        //if((p_rsa=PEM_read_RSAPublicKey(file,NULL,NULL,NULL))==NULL){   换成这句死活通不过，无论是否将公钥分离源文件
-        ERR_print_errors_fp(stdout);
-        return NULL;
-    }
-    flen=strlen(str);
-    rsa_len=RSA_size(p_rsa);
-    p_en=(char *)malloc(rsa_len+1);
-    memset(p_en,0,rsa_len+1);
-    if(RSA_public_encrypt(rsa_len,(unsigned char *)str,(unsigned char*)p_en,p_rsa,RSA_NO_PADDING)<0){
-        return NULL;
-    }
-    RSA_free(p_rsa);
-    fclose(file);
-    return p_en;
+    return rsa;
 }
 
-char *public_decrypt(char *str,char *path_key){
-    char *p_en;
-    RSA *p_rsa;
-    FILE *file;
-    int flen,rsa_len;
-    if((file=fopen(path_key,"r"))==NULL){
+RSA *rsa_file_key(const char *path, int isPublic)
+{
+    RSA *rsa = NULL;
+    FILE *file = fopen(path,"r");
+    if(!file){
         perror("open key file error");
         return NULL;
     }
-    if((p_rsa=PEM_read_RSA_PUBKEY(file,NULL,NULL,NULL))==NULL){
-        //if((p_rsa=PEM_read_RSAPublicKey(file,NULL,NULL,NULL))==NULL){   换成这句死活通不过，无论是否将公钥分离源文件
+    if (isPublic) {
+        rsa = PEM_read_RSA_PUBKEY(file, NULL, NULL, NULL);
+    } else {
+        rsa = PEM_read_RSAPrivateKey(file, NULL, NULL, NULL);
+    }
+    if (!rsa) {
         ERR_print_errors_fp(stdout);
-        return NULL;
     }
-    flen=strlen(str);
-    rsa_len=RSA_size(p_rsa);
-    p_en=(char *)malloc(rsa_len+1);
-    memset(p_en,0,rsa_len+1);
-    if(RSA_public_decrypt(rsa_len,(unsigned char *)str,(unsigned char*)p_en,p_rsa,RSA_NO_PADDING)<0){
-        return NULL;
-    }
-    RSA_free(p_rsa);
-    fclose(file);
-    return p_en;
+    return rsa;
 }
-
-char *private_encrypt(char *str,char *path_key){
-    char *p_de;
-    RSA *p_rsa;
-    FILE *file;
-    int rsa_len;
-    if((file=fopen(path_key,"r"))==NULL){
-        perror("open key file error");
+char *rsa_encrypt(char *str, RSA *key, int isPublic)
+{
+    int len = RSA_size(key);
+    char *enc = (char *)malloc(len+1);
+    memset(enc, 0, len + 1);
+    
+    int ret = 0;
+    if (isPublic) {
+        ret = RSA_public_encrypt(len,(unsigned char *)str,(unsigned char*)enc, key, RSA_NO_PADDING);
+    } else {
+        ret = RSA_private_encrypt(len,(unsigned char *)str,(unsigned char*)enc, key, RSA_NO_PADDING);
+    }
+    if (ret < 0) {
         return NULL;
     }
-    if((p_rsa=PEM_read_RSAPrivateKey(file,NULL,NULL,NULL))==NULL){
-        ERR_print_errors_fp(stdout);
-        return NULL;
-    }
-    rsa_len=RSA_size(p_rsa);
-    p_de=(char *)malloc(rsa_len+1);
-    memset(p_de,0,rsa_len+1);
-    if(RSA_private_encrypt(rsa_len,(unsigned char *)str,(unsigned char*)p_de,p_rsa,RSA_NO_PADDING)<0){
-        return NULL;
-    }
-    RSA_free(p_rsa);
-    fclose(file);
-    return p_de;
+    return enc;
 }
-
-char *private_decrypt(char *str,char *path_key){
-    char *p_de;
-    RSA *p_rsa;
-    FILE *file;
-    int rsa_len;
-    if((file=fopen(path_key,"r"))==NULL){
-        perror("open key file error");
+char *rsa_decrypt(char *str, RSA *key, int isPublic)
+{
+    int len = RSA_size(key);
+    char *dec = (char *)malloc(len+1);
+    memset(dec, 0, len + 1);
+    
+    int ret = 0;
+    if (isPublic) {
+        ret = RSA_public_decrypt(len,(unsigned char *)str,(unsigned char *)dec, key, RSA_NO_PADDING);
+    } else {
+        ret = RSA_private_decrypt(len,(unsigned char *)str,(unsigned char *)dec, key, RSA_NO_PADDING);
+    }
+    
+    if (ret < 0) {
         return NULL;
     }
-    if((p_rsa=PEM_read_RSAPrivateKey(file,NULL,NULL,NULL))==NULL){
-        ERR_print_errors_fp(stdout);
-        return NULL;
-    }
-    rsa_len=RSA_size(p_rsa);
-    p_de=(char *)malloc(rsa_len+1);
-    memset(p_de,0,rsa_len+1);
-    if(RSA_private_decrypt(rsa_len,(unsigned char *)str,(unsigned char*)p_de,p_rsa,RSA_NO_PADDING)<0){
-        return NULL;
-    }
-    RSA_free(p_rsa);
-    fclose(file);
-    return p_de;
+    return dec;
 }
 
 int test_main(void){
-    char *source="i like dancing !";
+//    RSA *pubkey = rsa_mem_key(public_key_content, 1);
+//    RSA *prikey = rsa_mem_key(private_key_content, 0);
+    RSA *pubkey = rsa_file_key(public_key, 1);
+    RSA *prikey = rsa_file_key(private_key, 0);
+    char *source= "i like dancing sdfasfdasfdasdfasdfasfasfasfsafasfasfasdfasddfaaaaabbbbbccccddddeeeeffffgggghhhhiiiijjjjkkkkllllmmmmnnnnooooppppqqqqrrrrssssttttuuuuvvvvwwwwxxxxyyyyzzzz!";
+    
     char *ptr_en,*ptr_de;
     printf("source is    :%s\n",source);
-    ptr_en = public_encrypt(source,public_key);
+    ptr_en = rsa_encrypt(source, pubkey, 1);
     printf("after public encrypt:%s\n",ptr_en);
-    ptr_de = private_decrypt(ptr_en,private_key);
+    ptr_de = rsa_decrypt(ptr_en, prikey, 0);
     printf("after private decrypt:%s\n",ptr_de);
-    ptr_en = private_encrypt(source,private_key);
+    ptr_en = rsa_encrypt(source,prikey, 0);
     printf("after private encrypt:%s\n",ptr_en);
-    ptr_de = public_decrypt(ptr_en,public_key);
+    ptr_de = rsa_decrypt(ptr_en, pubkey, 1);
     printf("after public decrypt:%s\n",ptr_de);
     if(ptr_en!=NULL){
         free(ptr_en);
