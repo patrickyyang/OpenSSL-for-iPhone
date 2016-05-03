@@ -8,6 +8,7 @@
 
 #import "OpenSSLTest.h"
 #import "rsa.h"
+#import "aes.h"
 
 @implementation OpenSSLTest
 
@@ -18,14 +19,12 @@
     NSString *pri = [dir stringByAppendingPathComponent:@"rsa.pem"];
     
     setKey(pub.UTF8String, pri.UTF8String);
-    
-    //    openssl_main();
-    test_main();
+    rsa_main();
 }
 
 + (void)aes
 {
-    
+    aes_main();
 }
 
 @end

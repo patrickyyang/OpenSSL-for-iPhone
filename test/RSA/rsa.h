@@ -16,16 +16,10 @@ extern "C" {
 #endif
     
     void setKey(const char *publicPath, const char *privatePath);
+    int rsa_main(void);
     
-    int openssl_main();
-    int test_main(void);
-    
-    
-
 #ifdef __cplusplus
 }
 #endif
-
-int openssl_main();
 
 #endif /* rsa_h */

@@ -54,4 +54,7 @@ class ViewController: UIViewController {
     @IBAction func onRsaClicked(sender: UIButton) {
         OpenSSLTest.rsa()
     }
+    @IBAction func onAesClicked(sender: UIButton) {
+        OpenSSLTest.aes()
+    }
 }

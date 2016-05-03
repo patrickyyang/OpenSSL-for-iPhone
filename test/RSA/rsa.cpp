@@ -140,7 +140,7 @@ char *rsa_decrypt(char *str, RSA *key, int isPublic)
     return dec;
 }
 
-int test_main(void){
+int rsa_main(void){
 //    RSA *pubkey = rsa_mem_key(public_key_content, 1);
 //    RSA *prikey = rsa_mem_key(private_key_content, 0);
     RSA *pubkey = rsa_file_key(public_key, 1);
