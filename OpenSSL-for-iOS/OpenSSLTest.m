@@ -9,6 +9,7 @@
 #import "OpenSSLTest.h"
 #import "rsa.h"
 #import "aes.h"
+#import "base64.h"
 
 @implementation OpenSSLTest
 
@@ -25,6 +26,11 @@
 + (void)aes
 {
     aes_main();
+}
+
++ (void)base64
+{
+    base64_main();
 }
 
 @end

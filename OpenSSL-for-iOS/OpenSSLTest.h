@@ -12,5 +12,6 @@
 
 + (void)rsa;
 + (void)aes;
++ (void)base64;
 
 @end

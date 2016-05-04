@@ -30,6 +30,8 @@
 		53572A57183AAFFE00B21832 /* FSOpenSSLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 53572A56183AAFFE00B21832 /* FSOpenSSLTests.m */; };
 		D1E978031547EE765CD39AD2 /* FSOpenSSL.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E97EE2A904D58DAE4231E2 /* FSOpenSSL.m */; };
 		D461BB151CD83EB6000F0066 /* OpenSSLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = D461BB141CD83EB6000F0066 /* OpenSSLTest.m */; };
+		D461BB191CD87E6C000F0066 /* aes.c in Sources */ = {isa = PBXBuildFile; fileRef = D461BB171CD87E6C000F0066 /* aes.c */; };
+		D461BDB21CD98E86000F0066 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D461BDB01CD98E86000F0066 /* base64.c */; };
 		D4AD6BE31CD83D5300ECF132 /* rsa.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4AD6BDF1CD83D5300ECF132 /* rsa.cpp */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +75,10 @@
 		D1E97EE2A904D58DAE4231E2 /* FSOpenSSL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSOpenSSL.m; sourceTree = "<group>"; };
 		D461BB131CD83EB6000F0066 /* OpenSSLTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenSSLTest.h; sourceTree = "<group>"; };
 		D461BB141CD83EB6000F0066 /* OpenSSLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenSSLTest.m; sourceTree = "<group>"; };
+		D461BB171CD87E6C000F0066 /* aes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aes.c; sourceTree = "<group>"; };
+		D461BB181CD87E6C000F0066 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		D461BDB01CD98E86000F0066 /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
+		D461BDB11CD98E86000F0066 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 		D4AD6BDF1CD83D5300ECF132 /* rsa.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rsa.cpp; sourceTree = "<group>"; };
 		D4AD6BE01CD83D5300ECF132 /* rsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rsa.h; sourceTree = "<group>"; };
 		FD5896FA1B2F1FAA00F3E5B5 /* build-libssl.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-libssl.sh"; sourceTree = "<group>"; };
@@ -209,9 +215,29 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D461BB161CD87E46000F0066 /* AES */ = {
+			isa = PBXGroup;
+			children = (
+				D461BB171CD87E6C000F0066 /* aes.c */,
+				D461BB181CD87E6C000F0066 /* aes.h */,
+			);
+			path = AES;
+			sourceTree = "<group>";
+		};
+		D461BDAF1CD98E7C000F0066 /* base64 */ = {
+			isa = PBXGroup;
+			children = (
+				D461BDB01CD98E86000F0066 /* base64.c */,
+				D461BDB11CD98E86000F0066 /* base64.h */,
+			);
+			path = base64;
+			sourceTree = "<group>";
+		};
 		D4AD6BDB1CD83D5300ECF132 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				D461BDAF1CD98E7C000F0066 /* base64 */,
+				D461BB161CD87E46000F0066 /* AES */,
 				D4AD6BDC1CD83D5300ECF132 /* RSA */,
 			);
 			path = test;
@@ -392,7 +418,9 @@
 			files = (
 				D461BB151CD83EB6000F0066 /* OpenSSLTest.m in Sources */,
 				2A3821001BFB5EEB00328618 /* AppDelegate.swift in Sources */,
+				D461BDB21CD98E86000F0066 /* base64.c in Sources */,
 				2A3821021BFB607A00328618 /* ViewController.swift in Sources */,
+				D461BB191CD87E6C000F0066 /* aes.c in Sources */,
 				D4AD6BE31CD83D5300ECF132 /* rsa.cpp in Sources */,
 				D1E978031547EE765CD39AD2 /* FSOpenSSL.m in Sources */,
 			);

@@ -57,4 +57,7 @@ class ViewController: UIViewController {
     @IBAction func onAesClicked(sender: UIButton) {
         OpenSSLTest.aes()
     }
+    @IBAction func onBase64Clicked(sender: UIButton) {
+        OpenSSLTest.base64()
+    }
 }
